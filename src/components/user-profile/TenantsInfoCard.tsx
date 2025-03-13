@@ -1,7 +1,21 @@
 'use client'
 import React, { useState } from 'react'
-
-export default function TenantsInfoCard() {
+import Badge from '../ui/badge/Badge'
+export default function TenantsInfoCard({
+  tenantsName,
+  phoneNumber,
+  email,
+  websiteUrl,
+  address,
+  activation,
+}: {
+  tenantsName: string | undefined
+  phoneNumber: string | undefined
+  email: string | undefined
+  websiteUrl: string | undefined
+  address: string | undefined
+  activation: boolean | undefined
+}) {
   const [cardUnd, setCardUnd] = useState(false)
 
   return (
@@ -61,46 +75,56 @@ export default function TenantsInfoCard() {
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-7 2xl:gap-x-32">
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                First Name
+                Tenant name
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Musharof
+                {tenantsName}
               </p>
             </div>
 
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Last Name
+                Phone number
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Chowdhury
+                {phoneNumber}
               </p>
             </div>
 
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Email address
+                Email
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                randomuser@pimjo.com
+                {email}
               </p>
             </div>
 
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Phone
+                Website Url
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                +09 363 398 46
+                {websiteUrl}
               </p>
             </div>
 
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Bio
+                Address
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Team Manager
+                {address}
+              </p>
+            </div>
+            <div>
+              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                Activation
+              </p>
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                <Badge size="sm" color={activation ? 'success' : 'error'}>
+                  {activation ? 'Active' : 'Inactive'}
+                </Badge>
               </p>
             </div>
           </div>

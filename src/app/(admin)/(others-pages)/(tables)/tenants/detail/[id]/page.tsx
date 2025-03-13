@@ -1,24 +1,108 @@
 'use client'
 import TenantsInfoCard from '@/components/user-profile/TenantsInfoCard'
 import Button from '@/components/ui/button/Button'
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import { useRouter, useParams } from 'next/navigation'
 import UserTableCard from '@/components/user-profile/UsertableCard'
 import TenantsSystemInfoCard from '@/components/user-profile/TenantsSystemInfoCard'
 import { useModal } from '@/hooks/useModal'
 import { Modal } from '@/components/ui/modal'
 import Label from '@/components/form/Label'
 import Input from '@/components/form/input/InputField'
+import axios from 'axios'
+import Badge from '@/components/ui/badge/Badge'
+
+interface TenantContact {
+  id: string
+  fullName: string
+  firstName: string
+  lastName: string
+  phoneNumber: string
+  invoiceEmailAddress: string
+  contactTypeEnum: string
+  contactTypeDisplayName: string
+  fullAddress: string
+  zipCode: string
+  city: string
+  country: string
+}
+
+interface TenantData {
+  id: string
+  tenantName: string
+  isActive: boolean
+  phoneNumber: string
+  websiteUrl: string
+  emailAddress: string
+  fullAddress: string
+  region: string | null
+  district: string | null
+  city: string
+  address1Street: string
+  address2House: string | null
+  zipCode: string
+  tenantContacts: TenantContact[]
+  createdDateTimeUTC: string
+  creatorUserId: string
+  creatorUserName: string
+  updatedDateTimeUTC: string
+  updaterUserId: string
+  updaterUserName: string
+}
+
+interface TenantResponse {
+  success: boolean
+  status: number
+  totalCount: number | null
+  hasMore: boolean | null
+  error: string | null
+  data: TenantData
+}
 
 export default function TenantsDetail() {
+  const params = useParams()
+  const id = params.id
+  const [tenantsIdData, setTenanatsIdData] = useState<TenantResponse | null>()
   const router = useRouter()
   const [activeCard, setActiveCard] = useState(1)
   const { isOpen, openModal, closeModal } = useModal()
+  const [isError, setIsError] = useState<unknown>(null)
+  const [loading, setLoading] = useState(true)
   const handleSave = () => {
     // Handle save logic here
     console.log('Saving changes...')
     closeModal()
   }
+  {
+    /**appRouter */
+  }
+
+  {
+    /** 아이디값을 path parameter 에 담아서 전송*/
+  }
+  useEffect(() => {
+    const fetchTenantsData = async () => {
+      try {
+        const response = await axios.get(`/data/${id}.json`)
+
+        if (response.status === 200 && response.data !== tenantsIdData) {
+          setTenanatsIdData(response.data)
+          setLoading(false)
+        }
+      } catch (err) {
+        console.error(err)
+        setLoading(false)
+        if (err instanceof Error) {
+          setIsError(err.message)
+        } else {
+          setIsError('Unknown error occurred')
+        }
+      }
+    }
+    if (!id || tenantsIdData?.data?.id === id) return // ✅ 동일한 id 데이터면 API 요청하지 않음
+    fetchTenantsData()
+  }, [id])
+  console.log('aa', tenantsIdData?.data)
   return (
     <div>
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
@@ -71,9 +155,33 @@ export default function TenantsDetail() {
         <div className="space-y-6">
           {/*<UserMetaCard />*/}
           {/** basic information*/}
-          <TenantsInfoCard />
+          {loading ? (
+            <div className="flex justify-center items-center py-10">
+              <Badge>Loading...</Badge>
+            </div>
+          ) : (
+            <TenantsInfoCard
+              tenantsName={tenantsIdData?.data?.tenantName}
+              phoneNumber={tenantsIdData?.data?.phoneNumber}
+              email={tenantsIdData?.data?.emailAddress}
+              websiteUrl={tenantsIdData?.data?.websiteUrl}
+              address={tenantsIdData?.data?.fullAddress}
+              activation={tenantsIdData?.data?.isActive}
+            />
+          )}
           {/*System Information*/}
-          <TenantsSystemInfoCard />
+          {loading ? (
+            <div className="flex justify-center items-center py-10">
+              <Badge>Loading...</Badge>
+            </div>
+          ) : (
+            <TenantsSystemInfoCard
+              createOn={tenantsIdData?.data?.createdDateTimeUTC}
+              creatorUserId={tenantsIdData?.data?.creatorUserId}
+              lastModified={tenantsIdData?.data?.updatedDateTimeUTC}
+              updaterUserId={tenantsIdData?.data?.updaterUserId}
+            />
+          )}
           {/** 탭 버튼  */}
           <div className="flex items-center gap-5">
             <Button

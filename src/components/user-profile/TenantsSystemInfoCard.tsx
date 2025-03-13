@@ -1,7 +1,17 @@
 'use client'
 import React, { useState } from 'react'
 
-export default function TenantsSystemInfoCard() {
+export default function TenantsSystemInfoCard({
+  createOn,
+  lastModified,
+  creatorUserId,
+  updaterUserId,
+}: {
+  createOn: string | undefined
+  lastModified: string | undefined
+  creatorUserId: string | undefined
+  updaterUserId: string | undefined
+}) {
   const [cardUnd, setCardUnd] = useState(false)
 
   return (
@@ -61,46 +71,21 @@ export default function TenantsSystemInfoCard() {
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-7 2xl:gap-x-32">
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                First Name
+                Created ON
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Musharof
+                {createOn}
+                <br />({creatorUserId})
               </p>
             </div>
 
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Last Name
+                Last Modified On (by)
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Chowdhury
-              </p>
-            </div>
-
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Email address
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                randomuser@pimjo.com
-              </p>
-            </div>
-
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Phone
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                +09 363 398 46
-              </p>
-            </div>
-
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Bio
-              </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Team Manager
+                {lastModified}
+                <br />({updaterUserId})
               </p>
             </div>
           </div>

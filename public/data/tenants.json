@@ -1,0 +1,66 @@
+{
+  "success": true,
+  "status": 200,
+  "totalCount": 2,
+  "hasMore": false,
+  "error": null,
+  "data": [
+    {
+      "id": "51ff5710-5a6a-49d3-88dc-71ec6e2d8043",
+      "tenantName": "Blanda Group",
+      "isActive": true,
+      "phoneNumber": "2342342342342342222",
+      "websiteUrl": "https://olga.name",
+      "emailAddress": "Felix_OKeefe23@hotmail.com",
+      "fullAddress": "3523 Kassandra Mission",
+      "region": null,
+      "district": null,
+      "city": "Mariettaville",
+      "address1Street": "34819 Powlowski Mountains",
+      "address2House": null,
+      "zipCode": "33",
+      "tenantContacts": [
+        {
+          "fullName": "Minjung Kim",
+          "firstName": "Minjung",
+          "lastName": "Kim",
+          "phoneNumber": "821087958795",
+          "invoiceEmailAddress": "kmj@inventis.co.kr",
+          "contactTypeEnum": "Billing",
+          "contactTypeDisplayName": "Billing",
+          "fullAddress": "2450 massachusetts avenue n.w.",
+          "zipCode": "20008",
+          "city": "Washington, D.C.",
+          "country": "United States of America"
+        }
+      ],
+      "createdDateTimeUTC": "2024-08-29T08:25:36.936Z",
+      "creatorUserId": "4a971da2-b165-4672-947a-6ce163660b50",
+      "creatorUserName": "4a971da2-b165-4672-947a-6ce163660b50",
+      "updatedDateTimeUTC": "2024-08-30T06:48:38.276Z",
+      "updaterUserId": "9bec2a88-6fc1-40e6-a974-38c4732ea930",
+      "updaterUserName": "dealer365 dealer365"
+    },
+    {
+      "id": "75c2a9a5-aa18-41d6-912f-6c1a33f2018b",
+      "tenantName": "Inventis",
+      "isActive": true,
+      "phoneNumber": "+82-10-1231-1234",
+      "websiteUrl": "https://inventis.co.kr",
+      "emailAddress": "test@inventis.co.kr",
+      "fullAddress": "2450 massachusetts avenue n.w.",
+      "region": "Northwest",
+      "district": "Washington",
+      "city": "Washington, D.C.",
+      "address1Street": "massachusetts avenue n.w.",
+      "address2House": "2450",
+      "zipCode": "20008",
+      "createdDateTimeUTC": "2024-08-14T10:00:45.011Z",
+      "creatorUserId": "99b60b2e-ebb8-49fb-b4fd-861c36613d31",
+      "creatorUserName": "Ramon Doyle",
+      "updatedDateTimeUTC": "2024-08-14T10:00:45.011Z",
+      "updaterUserId": "99b60b2e-ebb8-49fb-b4fd-861c36613d31",
+      "updaterUserName": "Ramon Doyle"
+    }
+  ]
+}

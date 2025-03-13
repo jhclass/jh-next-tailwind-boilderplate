@@ -32,22 +32,22 @@ const navItems: NavItem[] = [
     name: 'Dashboard',
     subItems: [{ name: 'Ecommerce', path: '/', pro: false }],
   },
-  /*{
+  {
     icon: <CalenderIcon />,
-    name: "Calendar",
-    path: "/calendar",
+    name: 'Calendar',
+    path: '/calendar',
   },
   {
     icon: <UserCircleIcon />,
-    name: "User Profile",
-    path: "/profile",
+    name: 'User Profile',
+    path: '/profile',
   },
 
   {
-    name: "Forms",
+    name: 'Forms',
     icon: <ListIcon />,
-    subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
-  },*/
+    subItems: [{ name: 'Form Elements', path: '/form-elements', pro: false }],
+  },
   {
     name: 'Subscribes',
     icon: <TableIcon />,

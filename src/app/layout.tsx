@@ -1,18 +1,18 @@
-import { Outfit } from "next/font/google";
-import "./globals.css";
+import { Outfit } from 'next/font/google'
+import './globals.css'
 
-import { SidebarProvider } from "@/context/SidebarContext";
-import { ThemeProvider } from "@/context/ThemeContext";
+import { SidebarProvider } from '@/context/SidebarContext'
+import { ThemeProvider } from '@/context/ThemeContext'
 
 const outfit = Outfit({
-  variable: "--font-outfit-sans",
-  subsets: ["latin"],
-});
+  variable: '--font-outfit-sans',
+  subsets: ['latin'],
+})
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en">
@@ -22,5 +22,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }
