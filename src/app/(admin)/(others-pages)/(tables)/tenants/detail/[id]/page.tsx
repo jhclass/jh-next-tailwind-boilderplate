@@ -11,58 +11,12 @@ import Label from '@/components/form/Label'
 import Input from '@/components/form/input/InputField'
 import axios from 'axios'
 import Badge from '@/components/ui/badge/Badge'
-
-interface TenantContact {
-  id: string
-  fullName: string
-  firstName: string
-  lastName: string
-  phoneNumber: string
-  invoiceEmailAddress: string
-  contactTypeEnum: string
-  contactTypeDisplayName: string
-  fullAddress: string
-  zipCode: string
-  city: string
-  country: string
-}
-
-interface TenantData {
-  id: string
-  tenantName: string
-  isActive: boolean
-  phoneNumber: string
-  websiteUrl: string
-  emailAddress: string
-  fullAddress: string
-  region: string | null
-  district: string | null
-  city: string
-  address1Street: string
-  address2House: string | null
-  zipCode: string
-  tenantContacts: TenantContact[]
-  createdDateTimeUTC: string
-  creatorUserId: string
-  creatorUserName: string
-  updatedDateTimeUTC: string
-  updaterUserId: string
-  updaterUserName: string
-}
-
-interface TenantResponse {
-  success: boolean
-  status: number
-  totalCount: number | null
-  hasMore: boolean | null
-  error: string | null
-  data: TenantData
-}
-
+import { useTenantsStore } from '@/store/tenantsStore'
 export default function TenantsDetail() {
   const params = useParams()
   const id = params.id
-  const [tenantsIdData, setTenanatsIdData] = useState<TenantResponse | null>()
+  //const [tenantsIdData, setTenantsIdData] = useState<TenantResponse | null>()
+  const { tenantsIdData, setTenantsIdData, reset } = useTenantsStore()
   const router = useRouter()
   const [activeCard, setActiveCard] = useState(1)
   const { isOpen, openModal, closeModal } = useModal()
@@ -85,12 +39,13 @@ export default function TenantsDetail() {
       try {
         const response = await axios.get(`/data/${id}.json`)
 
-        if (response.status === 200 && response.data !== tenantsIdData) {
-          setTenanatsIdData(response.data)
+        if (response?.status === 200 && response?.data !== tenantsIdData) {
+          setTenantsIdData(response?.data)
           setLoading(false)
         }
       } catch (err) {
         console.error(err)
+        reset()
         setLoading(false)
         if (err instanceof Error) {
           setIsError(err.message)
@@ -99,10 +54,9 @@ export default function TenantsDetail() {
         }
       }
     }
-    if (!id || tenantsIdData?.data?.id === id) return // ✅ 동일한 id 데이터면 API 요청하지 않음
     fetchTenantsData()
   }, [id])
-  console.log('aa', tenantsIdData?.data)
+  console.log('Existing Data', tenantsIdData?.data)
   return (
     <div>
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">

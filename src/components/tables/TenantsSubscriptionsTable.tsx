@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '../ui/table'
 import { useModal } from '@/hooks/useModal'
 import { Modal } from '../ui/modal'
@@ -10,6 +10,8 @@ import Badge from '../ui/badge/Badge'
 import Image from 'next/image'
 import Pagination from './Pagination'
 import { useRouter } from 'next/navigation'
+import { subscribe } from 'diagnostics_channel'
+import axios from 'axios'
 
 interface Order {
   id: number
@@ -112,15 +114,80 @@ const tableData: Order[] = [
   },
 ]
 
+// 가격 항목 정보
+export interface PriceItem {
+  itemTypeEnum: string
+  itemValue: number
+}
+
+// 에디션 정보
+export interface EditionRef {
+  editionId: string
+  editionName: string
+}
+
+// 개별 구독 정보
+export interface Subscription {
+  id: string
+  systemSourceEnum: string
+  subscriptionStatusDisplayName: string
+  tenantId: string
+  subscribedDateTimeUTC: string
+  subscriberUserId: string
+  subscriberUserName: string
+  subscriptionStatusEnum: string
+  effectiveFromDateTimeUTC: string
+  effectiveToDateTimeUTC: string
+  unsubscribedDateTimeUTC: string | null
+  unsubscriberUserId: string | null
+  priceItems: PriceItem[]
+  isTrial: boolean
+  isRrecurringPayment: boolean
+  editionRef: EditionRef
+  createdDateTimeUTC: string
+  creatorUserId: string
+  creatorUserName: string
+  updatedDateTimeUTC: string
+  updaterUserId: string
+  updaterUserName: string
+}
+
+// API 응답 구조
+export interface SubscriptionResponse {
+  success: boolean
+  status: number
+  totalCount: number
+  hasMore: boolean
+  error: string | null
+  data: Subscription[]
+}
+
 export default function TanentsSubscriptionsTable() {
   const [currentPage, setCurrentPage] = useState(1)
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
   const paginatedData = tableData.slice(startIndex, endIndex)
   const totalPages = Math.ceil(tableData.length / ITEMS_PER_PAGE)
-  const router = useRouter()
-
   const { isOpen, openModal, closeModal } = useModal()
+  const [subscriptionsData, setSubscriptionsData] =
+    useState<SubscriptionResponse | null>(null)
+  useEffect(() => {
+    const fetchTenantsDetailSubscriptions = async () => {
+      try {
+        const response = await axios.get('/data/subscriptions.json')
+        //console.log('cons', response)
+        if (response.status === 200 && response?.data !== subscriptionsData) {
+          setSubscriptionsData(response.data)
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error(error.message)
+        }
+      }
+    }
+    fetchTenantsDetailSubscriptions()
+  }, [])
+  console.log(subscriptionsData)
   const handleSave = () => {
     // Handle save logic here
     console.log('Saving changes...')
@@ -138,86 +205,73 @@ export default function TanentsSubscriptionsTable() {
             <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
               <TableRow className="h-[50px]">
                 <TableCell isHeader className="w-[200px] px-5 py-3 text-start">
-                  User
+                  Plan
                 </TableCell>
-                <TableCell isHeader className="w-[160px] px-5 py-3 text-start">
-                  Project Name
+                <TableCell isHeader className="w-[250px] px-5 py-3 text-start">
+                  Effective Period
+                </TableCell>
+                <TableCell isHeader className="w-[100px] px-5 py-3 text-start">
+                  Validity
+                </TableCell>
+                <TableCell isHeader className="w-[50px] px-5 py-3 text-start">
+                  Trial
+                </TableCell>
+                <TableCell isHeader className="w-[250px] px-5 py-3 text-start">
+                  Subscribed On
                 </TableCell>
                 <TableCell isHeader className="w-[200px] px-5 py-3 text-start">
-                  Team
+                  Subscribed By
                 </TableCell>
-                <TableCell isHeader className="w-[120px] px-5 py-3 text-start">
-                  Status
+                <TableCell isHeader className="w-[250px] px-5 py-3 text-start">
+                  Unsubscribed On
                 </TableCell>
-                <TableCell isHeader className="w-[120px] px-5 py-3 text-start">
-                  Budget
-                </TableCell>
-                <TableCell isHeader className="w-[140px] px-5 py-3 text-start">
-                  Deadline {/* ⬅️ 새 컬럼 추가 */}
-                </TableCell>
-                <TableCell isHeader className="w-[120px] px-5 py-3 text-start">
-                  Priority {/* ⬅️ 새 컬럼 추가 */}
+                <TableCell isHeader className="w-[250px] px-5 py-3 text-start">
+                  Actions
                 </TableCell>
               </TableRow>
             </TableHeader>
             {/* Table Body */}
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {paginatedData.map(order => (
+              {subscriptionsData?.data.map(order => (
                 <TableRow
                   key={order.id}
                   className="h-[60px] cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   <TableCell className="px-5 py-4">
-                    <div className="flex items-center gap-3">
-                      <Image
-                        width={40}
-                        height={40}
-                        src={order.user.image}
-                        alt={order.user.name}
-                      />
-                      <div>
-                        <span className="block font-medium">
-                          {order.user.name}
-                        </span>
-                        <span className="block text-sm text-gray-500">
-                          {order.user.role}
-                        </span>
-                      </div>
-                    </div>
+                    {order?.editionRef?.editionName}
                   </TableCell>
                   <TableCell className="px-5 py-4">
-                    {order.projectName}
-                  </TableCell>
-                  <TableCell className="px-5 py-4">
-                    <div className="flex -space-x-2">
-                      {order.team.images.map((img, idx) => (
-                        <Image
-                          key={idx}
-                          width={24}
-                          height={24}
-                          src={img}
-                          alt={`Team member ${idx + 1}`}
-                        />
-                      ))}
-                    </div>
+                    {order?.effectiveFromDateTimeUTC} ~<br />
+                    {order?.effectiveToDateTimeUTC}
                   </TableCell>
                   <TableCell className="px-5 py-4">
                     <Badge
                       size="sm"
-                      color={
-                        order.status === 'Active'
-                          ? 'success'
-                          : order.status === 'Pending'
-                            ? 'warning'
-                            : 'error'
-                      }
+                      color="error"
+                      // color={
+                      //   order.status === 'Active'
+                      //     ? 'success'
+                      //     : order.status === 'Pending'
+                      //       ? 'warning'
+                      //       : 'error'
+                      // }
                     >
-                      {order.status}
+                      {'Expired'}
                     </Badge>
                   </TableCell>
-                  <TableCell className="px-5 py-4">{order.budget}</TableCell>
-                  <TableCell className="px-5 py-4">{order.deadline}</TableCell>
+                  <TableCell className="px-5 py-4">X</TableCell>
+                  <TableCell className="px-5 py-4">
+                    {order?.subscribedDateTimeUTC}
+                  </TableCell>
+                  <TableCell className="px-5 py-4">
+                    {order?.subscriberUserName}
+                  </TableCell>
                   {/* ⬅️ 새 데이터 추가 */}
+                  <TableCell className="px-5 py-4">
+                    {order?.unsubscribedDateTimeUTC === null
+                      ? '-'
+                      : order?.unsubscribedDateTimeUTC}
+                  </TableCell>
                   <TableCell className="px-5 py-4">
                     <button
                       onClick={openModal}
@@ -267,14 +321,14 @@ export default function TanentsSubscriptionsTable() {
               ))}
             </TableBody>
           </Table>
-          <div className="flex justify-end p-4">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
-          </div>
         </div>
+      </div>
+      <div className="flex justify-end p-4">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
       <Modal isOpen={isOpen} onClose={closeModal} className="max-w-[700px] m-4">
         <div className="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">

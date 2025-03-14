@@ -1,0 +1,73 @@
+{
+  "success": true,
+  "status": 200,
+  "totalCount": 2,
+  "hasMore": false,
+  "error": null,
+  "data": [
+    {
+      "id": "66d14cd9fef115e1ce3321a3",
+      "systemSourceEnum": "Dealer365",
+      "subscriptionStatusDisplayName": "Paid",
+      "tenantId": "51ff5710-5a6a-49d3-88dc-71ec6e2d8043",
+      "subscribedDateTimeUTC": "2024-08-24T04:08:42.763Z",
+      "subscriberUserId": "76d360f3-57e7-4756-abd6-219963edfd2d",
+      "subscriberUserName": "Chaemin Na",
+      "subscriptionStatusEnum": "Paid",
+      "effectiveFromDateTimeUTC": "2024-08-24T04:08:42.763Z",
+      "effectiveToDateTimeUTC": "2024-09-24T04:08:42.763Z",
+      "unsubscribedDateTimeUTC": null,
+      "unsubscriberUserId": null,
+      "priceItems": [
+        {
+          "itemTypeEnum": "TotalPrice",
+          "itemValue": 5000
+        }
+      ],
+      "isTrial": true,
+      "isRrecurringPayment": true,
+      "editionRef": {
+        "editionId": "66cff6e3fd8bd90be3c7ca64",
+        "editionName": "TEST NEW PLAN2"
+      },
+      "createdDateTimeUTC": "2024-05-24T04:08:42.763Z",
+      "creatorUserId": "76d360f3-57e7-4756-abd6-219963edfd2d",
+      "creatorUserName": "Chaemin Na",
+      "updatedDateTimeUTC": "2024-05-24T04:08:42.763Z",
+      "updaterUserId": "76d360f3-57e7-4756-abd6-219963edfd2d",
+      "updaterUserName": "Chaemin Na"
+    },
+    {
+      "id": "66d14fa7fef115e1ce3321a5",
+      "systemSourceEnum": "Dealer365",
+      "subscriptionStatusDisplayName": "Paid",
+      "tenantId": "51ff5710-5a6a-49d3-88dc-71ec6e2d8043",
+      "subscribedDateTimeUTC": "2024-08-24T04:08:42.763Z",
+      "subscriberUserId": "76d360f3-57e7-4756-abd6-219963edfd2d",
+      "subscriberUserName": "Chaemin Na",
+      "subscriptionStatusEnum": "Paid",
+      "effectiveFromDateTimeUTC": "2024-08-24T04:08:42.763Z",
+      "effectiveToDateTimeUTC": "2024-09-24T04:08:42.763Z",
+      "unsubscribedDateTimeUTC": "2024-08-24T04:08:42.763Z",
+      "unsubscriberUserId": "76d360f3-57e7-4756-abd6-219963edfd2d",
+      "priceItems": [
+        {
+          "itemTypeEnum": "TotalPrice",
+          "itemValue": 5000
+        }
+      ],
+      "isTrial": true,
+      "isRrecurringPayment": true,
+      "editionRef": {
+        "editionId": "66ceff607a3fe500f135d1b0",
+        "editionName": "new plan"
+      },
+      "createdDateTimeUTC": "2024-05-24T04:08:42.763Z",
+      "creatorUserId": "76d360f3-57e7-4756-abd6-219963edfd2d",
+      "creatorUserName": "Chaemin Na",
+      "updatedDateTimeUTC": "2024-05-24T04:08:42.763Z",
+      "updaterUserId": "76d360f3-57e7-4756-abd6-219963edfd2d",
+      "updaterUserName": "Chaemin Na"
+    }
+  ]
+}
