@@ -16,11 +16,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const token = localStorage.getItem('token')
   const router = useRouter()
-
+  const [token, setToken] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   useEffect(() => {
+    const storedToken = localStorage.getItem('token')
+    setToken(storedToken)
     if (token === null) {
       alert('Your token has expired.')
       router.push('/signin')
