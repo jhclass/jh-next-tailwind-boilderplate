@@ -30,16 +30,28 @@ export default function TanentsContactsTable() {
             {/* Table Header */}
             <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
               <TableRow className="h-[50px]">
-                <TableCell isHeader className="w-[330px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[330px] px-5 py-3 text-start dark:text-white"
+                >
                   Contact Name
                 </TableCell>
-                <TableCell isHeader className="w-[330px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[330px] px-5 py-3 text-start dark:text-white"
+                >
                   Phone Number
                 </TableCell>
-                <TableCell isHeader className="w-[330px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[330px] px-5 py-3 text-start dark:text-white"
+                >
                   Email
                 </TableCell>
-                <TableCell isHeader className="w-[330px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[330px] px-5 py-3 text-start dark:text-white"
+                >
                   Contact Type
                 </TableCell>
               </TableRow>
@@ -51,16 +63,18 @@ export default function TanentsContactsTable() {
                   key={order.id}
                   className="h-[60px] cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
-                  <TableCell className="px-5 py-4">{order.fullName}</TableCell>
-                  <TableCell className="px-5 py-4">
+                  <TableCell className="px-5 py-4 dark:text-white">
+                    {order.fullName}
+                  </TableCell>
+                  <TableCell className="px-5 py-4 dark:text-white">
                     {order.phoneNumber}
                   </TableCell>
-                  <TableCell className="px-5 py-4">
+                  <TableCell className="px-5 py-4 dark:text-white">
                     <div className="flex -space-x-2">
                       {order.invoiceEmailAddress}
                     </div>
                   </TableCell>
-                  <TableCell className="px-5 py-4">
+                  <TableCell className="px-5 py-4 dark:text-white">
                     {order.contactTypeDisplayName}
                   </TableCell>
                 </TableRow>

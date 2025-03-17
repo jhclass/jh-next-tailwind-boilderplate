@@ -96,25 +96,46 @@ export default function TanentsTable() {
             {/* Table Header */}
             <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
               <TableRow className="h-[50px]">
-                <TableCell isHeader className="w-[250px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[250px] px-5 py-3 text-start dark:text-white"
+                >
                   id
                 </TableCell>
-                <TableCell isHeader className="w-[200px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[200px] px-5 py-3 text-start dark:text-white"
+                >
                   Tenant name
                 </TableCell>
-                <TableCell isHeader className="w-[200px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[200px] px-5 py-3 text-start dark:text-white"
+                >
                   Activation
                 </TableCell>
-                <TableCell isHeader className="w-[250px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[250px] px-5 py-3 text-start dark:text-white"
+                >
                   Email
                 </TableCell>
-                <TableCell isHeader className="w-[250px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[250px] px-5 py-3 text-start dark:text-white"
+                >
                   Phone Number
                 </TableCell>
-                <TableCell isHeader className="w-[250px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[250px] px-5 py-3 text-start dark:text-white"
+                >
                   Created On {/* ⬅️ 새 컬럼 추가 */}
                 </TableCell>
-                <TableCell isHeader className="w-[250px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[250px] px-5 py-3 text-start dark:text-white"
+                >
                   Modified On {/* ⬅️ 새 컬럼 추가 */}
                 </TableCell>
               </TableRow>
@@ -128,8 +149,10 @@ export default function TanentsTable() {
                   onClick={() => router.push(`/tenants/detail/${order.id}`)}
                   className="h-[60px] cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
-                  <TableCell className="px-5 py-4">{order.id}</TableCell>
-                  <TableCell className="px-5 py-4">
+                  <TableCell className="px-5 py-4 dark:text-white">
+                    {order.id}
+                  </TableCell>
+                  <TableCell className="px-5 py-4 dark:text-white">
                     {order.tenantName}
                   </TableCell>
                   <TableCell className="px-5 py-4">
@@ -142,17 +165,17 @@ export default function TanentsTable() {
                       </Badge>
                     </div>
                   </TableCell>
-                  <TableCell className="px-5 py-4">
+                  <TableCell className="px-5 py-4 dark:text-white">
                     {order?.emailAddress}
                   </TableCell>
-                  <TableCell className="px-5 py-4">
-                    {order.phoneNumber}
+                  <TableCell className="px-5 py-4 dark:text-white">
+                    {order?.phoneNumber}
                   </TableCell>
-                  <TableCell className="px-5 py-4">
-                    {order.createdDateTimeUTC}
+                  <TableCell className="px-5 py-4 dark:text-white">
+                    {order?.createdDateTimeUTC}
                   </TableCell>
                   {/* ⬅️ 새 데이터 추가 */}
-                  <TableCell className="px-5 py-4">
+                  <TableCell className="px-5 py-4 dark:text-white">
                     {order.updatedDateTimeUTC}
                   </TableCell>
                 </TableRow>

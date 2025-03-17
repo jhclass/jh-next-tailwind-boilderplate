@@ -17,7 +17,7 @@ import {
   TableIcon,
   UserCircleIcon,
 } from '../icons/index'
-import SidebarWidget from './SidebarWidget'
+//import SidebarWidget from './SidebarWidget'
 
 type NavItem = {
   name: string
@@ -309,7 +309,7 @@ const AppSidebar: React.FC = () => {
         <Link href="/">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
-              <Image
+              {/* <Image
                 className="dark:hidden"
                 src="/images/logo/logo.svg"
                 alt="Logo"
@@ -322,15 +322,20 @@ const AppSidebar: React.FC = () => {
                 alt="Logo"
                 width={150}
                 height={40}
-              />
+              /> */}
+              <h1 className="dark:hidden font-bold text-3xl">DEALER365</h1>
+              <h1 className="hidden dark:block text-blue-200 font-bold text-3xl">
+                DEALER365
+              </h1>
             </>
           ) : (
-            <Image
-              src="/images/logo/logo-icon.svg"
-              alt="Logo"
-              width={32}
-              height={32}
-            />
+            // <Image
+            //   src="/images/logo/logo-icon.svg"
+            //   alt="Logo"
+            //   width={32}
+            //   height={32}
+            // />
+            <h1 className=" text-blue-200 font-bold text-[40px]">D</h1>
           )}
         </Link>
       </div>
@@ -372,7 +377,7 @@ const AppSidebar: React.FC = () => {
             </div>
           </div>
         </nav>
-        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
+        {/*isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null*/}
       </div>
     </aside>
   )

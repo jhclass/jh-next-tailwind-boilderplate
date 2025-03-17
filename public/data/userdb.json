@@ -1,0 +1,14 @@
+{
+  "data": [
+    {
+      "id": "admin",
+      "password": "1234",
+      "token": "29a04337e08610e96b9c6d6d924e37e388b51ae8d0c4315fd7039957d8094bc6"
+    },
+    {
+      "id": "admin2",
+      "password": "1234",
+      "token": "e05640af24a7d2b60991329b6fce230e6893999a983ae24bd3ac4b4725485e1e"
+    }
+  ]
+}

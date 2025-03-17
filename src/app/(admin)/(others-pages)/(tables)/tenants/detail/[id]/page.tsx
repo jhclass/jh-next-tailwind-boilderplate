@@ -12,6 +12,8 @@ import Input from '@/components/form/input/InputField'
 import axios from 'axios'
 import Badge from '@/components/ui/badge/Badge'
 import { useTenantsStore } from '@/store/tenantsStore'
+import { useForm, Controller } from 'react-hook-form'
+
 export default function TenantsDetail() {
   const params = useParams()
   const id = params.id
@@ -22,9 +24,38 @@ export default function TenantsDetail() {
   const { isOpen, openModal, closeModal } = useModal()
   const [isError, setIsError] = useState<unknown>(null)
   const [loading, setLoading] = useState(true)
-  const handleSave = () => {
-    // Handle save logic here
-    console.log('Saving changes...')
+  const {
+    control,
+    reset: resetForm,
+    setValue,
+    handleSubmit,
+    formState: { errors, dirtyFields },
+  } = useForm({
+    defaultValues: {
+      tenantName: tenantsIdData?.data?.tenantName || undefined,
+      phoneNumber: tenantsIdData?.data?.phoneNumber || undefined,
+      email: tenantsIdData?.data?.emailAddress || undefined,
+      websiteUrl: tenantsIdData?.data?.websiteUrl || undefined,
+    },
+  })
+  useEffect(() => {
+    if (tenantsIdData?.data) {
+      resetForm({
+        tenantName: tenantsIdData?.data?.tenantName || '',
+        phoneNumber: tenantsIdData?.data?.phoneNumber || '',
+        email: tenantsIdData?.data?.emailAddress || '',
+        websiteUrl: tenantsIdData?.data?.websiteUrl || '',
+      })
+    }
+  }, [tenantsIdData, reset])
+  {
+    /** 폼데이터 */
+  }
+  const onSubmit = data => {
+    if (Object.keys(dirtyFields).length === 0) {
+      alert('수정내용이 없습니다.')
+    }
+    console.log(data)
     closeModal()
   }
   {
@@ -170,79 +201,80 @@ export default function TenantsDetail() {
         <div className="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
           <div className="px-2 pr-14">
             <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-              Edit Personal Information
+              Edit Tenant
             </h4>
-            <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
+            {/* <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
               Update your details to keep your profile up-to-date.
-            </p>
+            </p> */}
           </div>
-          <form className="flex flex-col">
+          <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
             <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
               <div>
                 <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-                  Social Links
+                  Basic Infomation
                 </h5>
 
-                <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
+                <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-1">
                   <div>
-                    <Label>Facebook</Label>
-                    <Input
-                      type="text"
-                      defaultValue="https://www.facebook.com/PimjoHQ"
+                    <Label>Tenant name*</Label>
+                    <Controller
+                      name="tenantName"
+                      control={control}
+                      rules={{ required: 'Tenant name  is required.' }}
+                      render={({ field }) => (
+                        <Input
+                          type="text"
+                          {...field}
+                          defaultValue={tenantsIdData?.data?.tenantName}
+                          errorMessage={errors?.tenantName?.message}
+                        />
+                      )}
                     />
                   </div>
 
                   <div>
-                    <Label>X.com</Label>
-                    <Input type="text" defaultValue="https://x.com/PimjoHQ" />
-                  </div>
-
-                  <div>
-                    <Label>Linkedin</Label>
-                    <Input
-                      type="text"
-                      defaultValue="https://www.linkedin.com/company/pimjo"
+                    <Label>Phone Number</Label>
+                    <Controller
+                      name="phoneNumber"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          type="text"
+                          {...field}
+                          defaultValue={tenantsIdData?.data?.phoneNumber}
+                        />
+                      )}
                     />
                   </div>
 
                   <div>
-                    <Label>Instagram</Label>
-                    <Input
-                      type="text"
-                      defaultValue="https://instagram.com/PimjoHQ"
+                    <Label>Email</Label>
+                    <Controller
+                      name="email"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          type="text"
+                          {...field}
+                          defaultValue={tenantsIdData?.data?.emailAddress}
+                        />
+                      )}
                     />
                   </div>
-                </div>
-              </div>
-              <div className="mt-7">
-                <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-                  Personal Information
-                </h5>
 
-                <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>First Name</Label>
-                    <Input type="text" defaultValue="Musharof" />
-                  </div>
-
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Last Name</Label>
-                    <Input type="text" defaultValue="Chowdhury" />
-                  </div>
-
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Email Address</Label>
-                    <Input type="text" defaultValue="randomuser@pimjo.com" />
-                  </div>
-
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Phone</Label>
-                    <Input type="text" defaultValue="+09 363 398 46" />
-                  </div>
-
-                  <div className="col-span-2">
-                    <Label>Bio</Label>
-                    <Input type="text" defaultValue="Team Manager" />
+                  <div>
+                    <Label>Website Url</Label>
+                    <Controller
+                      name="websiteUrl"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          type="text"
+                          {...field}
+                          defaultValue={tenantsIdData?.data?.websiteUrl}
+                        />
+                      )}
+                    />
                   </div>
                 </div>
               </div>
@@ -251,7 +283,7 @@ export default function TenantsDetail() {
               <Button size="sm" variant="outline" onClick={closeModal}>
                 Close
               </Button>
-              <Button size="sm" onClick={handleSave}>
+              <Button size="sm" type="submit">
                 Save Changes
               </Button>
             </div>

@@ -7,112 +7,8 @@ import Label from '../form/Label'
 import Input from '../form/input/InputField'
 import Button from '../ui/button/Button'
 import Badge from '../ui/badge/Badge'
-import Image from 'next/image'
 import Pagination from './Pagination'
-import { useRouter } from 'next/navigation'
-import { subscribe } from 'diagnostics_channel'
 import axios from 'axios'
-
-interface Order {
-  id: number
-  user: {
-    image: string
-    name: string
-    role: string
-  }
-  projectName: string
-  team: {
-    images: string[]
-  }
-  status: string
-  budget: string
-}
-const ITEMS_PER_PAGE = 3 // 한 페이지에 보여줄 개수
-// Define the table data using the interface
-const tableData: Order[] = [
-  {
-    id: 1,
-    user: {
-      image: '/images/user/user-17.jpg',
-      name: 'Lindsey Curtis',
-      role: 'Web Designer',
-    },
-    projectName: 'Agency Website',
-    team: {
-      images: [
-        '/images/user/user-22.jpg',
-        '/images/user/user-23.jpg',
-        '/images/user/user-24.jpg',
-      ],
-    },
-    budget: '3.9K',
-    status: 'Active',
-  },
-  {
-    id: 2,
-    user: {
-      image: '/images/user/user-18.jpg',
-      name: 'Kaiya George',
-      role: 'Project Manager',
-    },
-    projectName: 'Technology',
-    team: {
-      images: ['/images/user/user-25.jpg', '/images/user/user-26.jpg'],
-    },
-    budget: '24.9K',
-    status: 'Pending',
-  },
-  {
-    id: 3,
-    user: {
-      image: '/images/user/user-17.jpg',
-      name: 'Zain Geidt',
-      role: 'Content Writing',
-    },
-    projectName: 'Blog Writing',
-    team: {
-      images: ['/images/user/user-27.jpg'],
-    },
-    budget: '12.7K',
-    status: 'Active',
-  },
-  {
-    id: 4,
-    user: {
-      image: '/images/user/user-20.jpg',
-      name: 'Abram Schleifer',
-      role: 'Digital Marketer',
-    },
-    projectName: 'Social Media',
-    team: {
-      images: [
-        '/images/user/user-28.jpg',
-        '/images/user/user-29.jpg',
-        '/images/user/user-30.jpg',
-      ],
-    },
-    budget: '2.8K',
-    status: 'Cancel',
-  },
-  {
-    id: 5,
-    user: {
-      image: '/images/user/user-21.jpg',
-      name: 'Carla George',
-      role: 'Front-end Developer',
-    },
-    projectName: 'Website',
-    team: {
-      images: [
-        '/images/user/user-31.jpg',
-        '/images/user/user-32.jpg',
-        '/images/user/user-33.jpg',
-      ],
-    },
-    budget: '4.5K',
-    status: 'Active',
-  },
-]
 
 // 가격 항목 정보
 export interface PriceItem {
@@ -164,10 +60,7 @@ export interface SubscriptionResponse {
 
 export default function TanentsSubscriptionsTable() {
   const [currentPage, setCurrentPage] = useState(1)
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-  const endIndex = startIndex + ITEMS_PER_PAGE
-  const paginatedData = tableData.slice(startIndex, endIndex)
-  const totalPages = Math.ceil(tableData.length / ITEMS_PER_PAGE)
+  const totalPages = 3
   const { isOpen, openModal, closeModal } = useModal()
   const [subscriptionsData, setSubscriptionsData] =
     useState<SubscriptionResponse | null>(null)
@@ -187,7 +80,7 @@ export default function TanentsSubscriptionsTable() {
     }
     fetchTenantsDetailSubscriptions()
   }, [])
-  console.log(subscriptionsData)
+
   const handleSave = () => {
     // Handle save logic here
     console.log('Saving changes...')
@@ -204,28 +97,52 @@ export default function TanentsSubscriptionsTable() {
             {/* Table Header */}
             <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
               <TableRow className="h-[50px]">
-                <TableCell isHeader className="w-[200px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[200px] px-5 py-3 text-start dark:text-white"
+                >
                   Plan
                 </TableCell>
-                <TableCell isHeader className="w-[250px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[250px] px-5 py-3 text-start dark:text-white"
+                >
                   Effective Period
                 </TableCell>
-                <TableCell isHeader className="w-[100px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[100px] px-5 py-3 text-start dark:text-white"
+                >
                   Validity
                 </TableCell>
-                <TableCell isHeader className="w-[50px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[50px] px-5 py-3 text-start dark:text-white"
+                >
                   Trial
                 </TableCell>
-                <TableCell isHeader className="w-[250px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[250px] px-5 py-3 text-start dark:text-white"
+                >
                   Subscribed On
                 </TableCell>
-                <TableCell isHeader className="w-[200px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[200px] px-5 py-3 text-start dark:text-white"
+                >
                   Subscribed By
                 </TableCell>
-                <TableCell isHeader className="w-[250px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[250px] px-5 py-3 text-start dark:text-white"
+                >
                   Unsubscribed On
                 </TableCell>
-                <TableCell isHeader className="w-[250px] px-5 py-3 text-start">
+                <TableCell
+                  isHeader
+                  className="w-[250px] px-5 py-3 text-start dark:text-white"
+                >
                   Actions
                 </TableCell>
               </TableRow>
@@ -237,14 +154,14 @@ export default function TanentsSubscriptionsTable() {
                   key={order.id}
                   className="h-[60px] cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
-                  <TableCell className="px-5 py-4">
+                  <TableCell className="px-5 py-4 dark:text-white">
                     {order?.editionRef?.editionName}
                   </TableCell>
-                  <TableCell className="px-5 py-4">
+                  <TableCell className="px-5 py-4 dark:text-white">
                     {order?.effectiveFromDateTimeUTC} ~<br />
                     {order?.effectiveToDateTimeUTC}
                   </TableCell>
-                  <TableCell className="px-5 py-4">
+                  <TableCell className="px-5 py-4 ">
                     <Badge
                       size="sm"
                       color="error"
@@ -259,20 +176,20 @@ export default function TanentsSubscriptionsTable() {
                       {'Expired'}
                     </Badge>
                   </TableCell>
-                  <TableCell className="px-5 py-4">X</TableCell>
-                  <TableCell className="px-5 py-4">
+                  <TableCell className="px-5 py-4 dark:text-white">X</TableCell>
+                  <TableCell className="px-5 py-4 dark:text-white">
                     {order?.subscribedDateTimeUTC}
                   </TableCell>
-                  <TableCell className="px-5 py-4">
+                  <TableCell className="px-5 py-4 dark:text-white">
                     {order?.subscriberUserName}
                   </TableCell>
                   {/* ⬅️ 새 데이터 추가 */}
-                  <TableCell className="px-5 py-4">
+                  <TableCell className="px-5 py-4 dark:text-white">
                     {order?.unsubscribedDateTimeUTC === null
                       ? '-'
                       : order?.unsubscribedDateTimeUTC}
                   </TableCell>
-                  <TableCell className="px-5 py-4">
+                  <TableCell className="px-5 py-4 ">
                     <button
                       onClick={openModal}
                       className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
@@ -334,22 +251,22 @@ export default function TanentsSubscriptionsTable() {
         <div className="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
           <div className="px-2 pr-14">
             <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-              Edit Personal Information
+              Subscriptions
             </h4>
-            <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
+            {/* <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
               Update your details to keep your profile up-to-date.
-            </p>
+            </p> */}
           </div>
           <form className="flex flex-col">
             <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
               <div>
-                <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
+                {/* <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
                   Social Links
-                </h5>
+                </h5> */}
 
                 <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
                   <div>
-                    <Label>Facebook</Label>
+                    <Label>Plan</Label>
                     <Input
                       type="text"
                       defaultValue="https://www.facebook.com/PimjoHQ"
@@ -357,12 +274,12 @@ export default function TanentsSubscriptionsTable() {
                   </div>
 
                   <div>
-                    <Label>X.com</Label>
+                    <Label>Effective Periodw</Label>
                     <Input type="text" defaultValue="https://x.com/PimjoHQ" />
                   </div>
 
                   <div>
-                    <Label>Linkedin</Label>
+                    <Label>Validity</Label>
                     <Input
                       type="text"
                       defaultValue="https://www.linkedin.com/company/pimjo"
@@ -370,43 +287,39 @@ export default function TanentsSubscriptionsTable() {
                   </div>
 
                   <div>
-                    <Label>Instagram</Label>
+                    <Label>Trial</Label>
                     <Input
                       type="text"
                       defaultValue="https://instagram.com/PimjoHQ"
                     />
                   </div>
-                </div>
-              </div>
-              <div className="mt-7">
-                <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-                  Personal Information
-                </h5>
-
-                <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>First Name</Label>
-                    <Input type="text" defaultValue="Musharof" />
+                  <div>
+                    <Label>Subscribed On</Label>
+                    <Input
+                      type="text"
+                      defaultValue="https://instagram.com/PimjoHQ"
+                    />
                   </div>
-
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Last Name</Label>
-                    <Input type="text" defaultValue="Chowdhury" />
+                  <div>
+                    <Label>Subscribed By</Label>
+                    <Input
+                      type="text"
+                      defaultValue="https://instagram.com/PimjoHQ"
+                    />
                   </div>
-
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Email Address</Label>
-                    <Input type="text" defaultValue="randomuser@pimjo.com" />
+                  <div>
+                    <Label>Unsubscribed By</Label>
+                    <Input
+                      type="text"
+                      defaultValue="https://instagram.com/PimjoHQ"
+                    />
                   </div>
-
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Phone</Label>
-                    <Input type="text" defaultValue="+09 363 398 46" />
-                  </div>
-
-                  <div className="col-span-2">
-                    <Label>Bio</Label>
-                    <Input type="text" defaultValue="Team Manager" />
+                  <div>
+                    <Label>Unsubscribed By</Label>
+                    <Input
+                      type="text"
+                      defaultValue="https://instagram.com/PimjoHQ"
+                    />
                   </div>
                 </div>
               </div>
