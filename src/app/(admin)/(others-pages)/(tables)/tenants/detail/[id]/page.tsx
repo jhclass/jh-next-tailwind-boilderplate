@@ -9,10 +9,11 @@ import { useModal } from '@/hooks/useModal'
 import { Modal } from '@/components/ui/modal'
 import Label from '@/components/form/Label'
 import Input from '@/components/form/input/InputField'
-import axios from 'axios'
+
 import Badge from '@/components/ui/badge/Badge'
-import { useTenantsStore } from '@/store/tenantsStore'
+import { TenantResponse, useTenantsStore } from '@/store/tenantsStore'
 import { useForm, Controller } from 'react-hook-form'
+import { getData } from '@/lib/api'
 
 export default function TenantsDetail() {
   const params = useParams()
@@ -27,7 +28,6 @@ export default function TenantsDetail() {
   const {
     control,
     reset: resetForm,
-    setValue,
     handleSubmit,
     formState: { errors, dirtyFields },
   } = useForm({
@@ -68,10 +68,9 @@ export default function TenantsDetail() {
   useEffect(() => {
     const fetchTenantsData = async () => {
       try {
-        const response = await axios.get(`/data/${id}.json`)
-
-        if (response?.status === 200 && response?.data !== tenantsIdData) {
-          setTenantsIdData(response?.data)
+        const response = await getData<TenantResponse>(`/data/${id}.json`)
+        if (response?.status === 200 && response !== tenantsIdData) {
+          setTenantsIdData(response)
           setLoading(false)
         }
       } catch (err) {
