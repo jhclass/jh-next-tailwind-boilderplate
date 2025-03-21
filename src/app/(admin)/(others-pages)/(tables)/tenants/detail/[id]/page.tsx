@@ -79,7 +79,7 @@ export default function TenantsDetail() {
         console.error(err)
 
         reset()
-        setLoading(false)
+        setLoading(false) 
         if (err instanceof Error) {
           setIsError(err.message)
           useGlobalErrorStore.getState().setGlobalError(err)
