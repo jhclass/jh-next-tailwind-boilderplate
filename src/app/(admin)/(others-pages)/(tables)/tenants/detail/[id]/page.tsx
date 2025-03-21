@@ -14,6 +14,7 @@ import Badge from '@/components/ui/badge/Badge'
 import { TenantResponse, useTenantsStore } from '@/store/tenantsStore'
 import { useForm, Controller } from 'react-hook-form'
 import { getData } from '@/lib/api'
+import { useGlobalErrorStore } from '@/store/errorStore'
 
 export default function TenantsDetail() {
   const params = useParams()
@@ -69,16 +70,19 @@ export default function TenantsDetail() {
     const fetchTenantsData = async () => {
       try {
         const response = await getData<TenantResponse>(`/data/${id}.json`)
-        if (response?.status === 200 && response !== tenantsIdData) {
+
+        if (response?.status === 200) {
           setTenantsIdData(response)
           setLoading(false)
         }
       } catch (err) {
         console.error(err)
+
         reset()
         setLoading(false)
         if (err instanceof Error) {
           setIsError(err.message)
+          useGlobalErrorStore.getState().setGlobalError(err)
         } else {
           setIsError('Unknown error occurred')
         }
