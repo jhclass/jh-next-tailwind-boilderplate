@@ -135,11 +135,7 @@ export default function SignInForm() {
                     name="id"
                     control={control}
                     render={({ field }) => (
-                      <Input
-                        placeholder="info@gmail.com"
-                        type="text"
-                        {...field}
-                      />
+                      <Input placeholder="userId" type="text" {...field} />
                     )}
                   />
                 </div>
@@ -154,7 +150,7 @@ export default function SignInForm() {
                       render={({ field }) => (
                         <Input
                           type={showPassword ? 'text' : 'password'}
-                          placeholder="Enter your password"
+                          placeholder="password"
                           {...field}
                         />
                       )}
