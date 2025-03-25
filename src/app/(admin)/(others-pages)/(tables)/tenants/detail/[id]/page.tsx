@@ -26,7 +26,6 @@ export default function TenantsDetail() {
   const { isOpen, openModal, closeModal } = useModal()
   const {
     control,
-
     handleSubmit,
     formState: { errors, dirtyFields },
   } = useForm({
