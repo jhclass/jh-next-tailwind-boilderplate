@@ -1,6 +1,6 @@
 // playwright.config.ts
 import { defineConfig, devices } from '@playwright/test'
-
+import { env } from '@/lib/env'
 export default defineConfig({
   testDir: './src/app/tests', // 테스트 폴더
   timeout: 30 * 1000,
@@ -8,7 +8,7 @@ export default defineConfig({
     timeout: 5000,
   },
   use: {
-    baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+    baseURL: env.NEXT_PUBLIC_BASE_URL,
     headless: true,
     viewport: { width: 1280, height: 720 },
     actionTimeout: 0,
@@ -16,7 +16,7 @@ export default defineConfig({
   },
   webServer: {
     command: 'npm run dev',
-    port: Number(process.env.NEXT_PUBLIC_PORT),
+    port: Number(env.NEXT_PUBLIC_PORT),
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
   },

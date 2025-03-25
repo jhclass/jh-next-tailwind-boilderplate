@@ -1,8 +1,8 @@
 import axios from 'axios'
-
+import { env } from '@/lib/env'
 //axios instance 생성
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  baseURL: env.NEXT_PUBLIC_BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
