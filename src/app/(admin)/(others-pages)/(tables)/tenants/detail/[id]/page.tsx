@@ -14,7 +14,7 @@ import Badge from '@/components/ui/badge/Badge'
 import { TenantResponse, useTenantsStore } from '@/store/tenantsStore'
 import { useForm, Controller } from 'react-hook-form'
 import { getData } from '@/lib/api'
-import { useGlobalErrorStore } from '@/store/errorStore'
+import { useQuery } from '@tanstack/react-query'
 
 export default function TenantsDetail() {
   const params = useParams()
@@ -24,31 +24,20 @@ export default function TenantsDetail() {
   const router = useRouter()
   const [activeCard, setActiveCard] = useState(1)
   const { isOpen, openModal, closeModal } = useModal()
-  const [isError, setIsError] = useState<unknown>(null)
-  const [loading, setLoading] = useState(true)
   const {
     control,
-    reset: resetForm,
+
     handleSubmit,
     formState: { errors, dirtyFields },
   } = useForm({
     defaultValues: {
-      tenantName: tenantsIdData?.data?.tenantName || undefined,
-      phoneNumber: tenantsIdData?.data?.phoneNumber || undefined,
-      email: tenantsIdData?.data?.emailAddress || undefined,
-      websiteUrl: tenantsIdData?.data?.websiteUrl || undefined,
+      tenantName: '',
+      phoneNumber: '',
+      email: '',
+      websiteUrl: '',
     },
   })
-  useEffect(() => {
-    if (tenantsIdData?.data) {
-      resetForm({
-        tenantName: tenantsIdData?.data?.tenantName || '',
-        phoneNumber: tenantsIdData?.data?.phoneNumber || '',
-        email: tenantsIdData?.data?.emailAddress || '',
-        websiteUrl: tenantsIdData?.data?.websiteUrl || '',
-      })
-    }
-  }, [tenantsIdData, reset])
+
   {
     /** 폼데이터 */
   }
@@ -66,31 +55,18 @@ export default function TenantsDetail() {
   {
     /** 아이디값을 path parameter 에 담아서 전송*/
   }
+
+  const { data, isLoading: loading } = useQuery({
+    queryKey: ['tenantIdData', id],
+    queryFn: () => getData<TenantResponse>(`/data/${id}.json`),
+    enabled: !!id,
+  })
   useEffect(() => {
-    const fetchTenantsData = async () => {
-      try {
-        const response = await getData<TenantResponse>(`/data/${id}.json`)
-
-        if (response?.status === 200) {
-          setTenantsIdData(response)
-          setLoading(false)
-        }
-      } catch (err) {
-        console.error(err)
-
-        reset()
-        setLoading(false) 
-        if (err instanceof Error) {
-          setIsError(err.message)
-          useGlobalErrorStore.getState().setGlobalError(err)
-        } else {
-          setIsError('Unknown error occurred')
-        }
-      }
+    if (data) {
+      setTenantsIdData(data)
     }
-    fetchTenantsData()
-  }, [id])
-  console.log('Existing Data', tenantsIdData?.data)
+  }, [data])
+  console.log('Existing Data', data)
   return (
     <div>
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
@@ -149,12 +125,12 @@ export default function TenantsDetail() {
             </div>
           ) : (
             <TenantsInfoCard
-              tenantsName={tenantsIdData?.data?.tenantName}
-              phoneNumber={tenantsIdData?.data?.phoneNumber}
-              email={tenantsIdData?.data?.emailAddress}
-              websiteUrl={tenantsIdData?.data?.websiteUrl}
-              address={tenantsIdData?.data?.fullAddress}
-              activation={tenantsIdData?.data?.isActive}
+              tenantsName={data?.data?.tenantName}
+              phoneNumber={data?.data?.phoneNumber}
+              email={data?.data?.emailAddress}
+              websiteUrl={data?.data?.websiteUrl}
+              address={data?.data?.fullAddress}
+              activation={data?.data?.isActive}
             />
           )}
           {/*System Information*/}
@@ -164,10 +140,10 @@ export default function TenantsDetail() {
             </div>
           ) : (
             <TenantsSystemInfoCard
-              createOn={tenantsIdData?.data?.createdDateTimeUTC}
-              creatorUserId={tenantsIdData?.data?.creatorUserId}
-              lastModified={tenantsIdData?.data?.updatedDateTimeUTC}
-              updaterUserId={tenantsIdData?.data?.updaterUserId}
+              createOn={data?.data?.createdDateTimeUTC}
+              creatorUserId={data?.data?.creatorUserId}
+              lastModified={data?.data?.updatedDateTimeUTC}
+              updaterUserId={data?.data?.updaterUserId}
             />
           )}
           {/** 탭 버튼  */}
@@ -228,7 +204,7 @@ export default function TenantsDetail() {
                         <Input
                           type="text"
                           {...field}
-                          defaultValue={tenantsIdData?.data?.tenantName}
+                          defaultValue={data?.data?.tenantName}
                           errorMessage={errors?.tenantName?.message}
                         />
                       )}
@@ -244,7 +220,7 @@ export default function TenantsDetail() {
                         <Input
                           type="text"
                           {...field}
-                          defaultValue={tenantsIdData?.data?.phoneNumber}
+                          defaultValue={data?.data?.phoneNumber}
                         />
                       )}
                     />
@@ -259,7 +235,7 @@ export default function TenantsDetail() {
                         <Input
                           type="text"
                           {...field}
-                          defaultValue={tenantsIdData?.data?.emailAddress}
+                          defaultValue={data?.data?.emailAddress}
                         />
                       )}
                     />

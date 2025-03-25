@@ -6,12 +6,12 @@ import { ThemeProvider } from '@/context/ThemeContext'
 import { useRouter, usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useGlobalErrorStore } from '@/store/errorStore'
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 
 const outfit = Outfit({
   variable: '--font-outfit-sans',
   subsets: ['latin'],
 })
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -21,6 +21,7 @@ export default function RootLayout({
   const [token, setToken] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const { error, clearError } = useGlobalErrorStore()
+  const queryClient = new QueryClient()
   useEffect(() => {
     const storedToken = localStorage.getItem('token')
     setToken(storedToken)
@@ -40,9 +41,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${outfit.variable} dark:bg-gray-900`}>
-        <ThemeProvider>
-          <SidebarProvider>{loading ? 'Loading...' : children}</SidebarProvider>
-        </ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            <SidebarProvider>
+              {loading ? 'Loading...' : children}
+            </SidebarProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
       </body>
     </html>
   )

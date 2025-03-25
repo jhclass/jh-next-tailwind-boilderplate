@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { env } from '@/lib/env'
+import { useGlobalErrorStore } from '@/store/errorStore'
 //axios instance 생성
 const api = axios.create({
   baseURL: env.NEXT_PUBLIC_BASE_URL,
@@ -28,6 +29,10 @@ api.interceptors.response.use(
   response => response,
   error => {
     console.error(`API 요청 실패:`, error)
+    if (error.status === 404) {
+      useGlobalErrorStore.getState().setGlobalError('404 Not Found')
+    }
+
     return Promise.reject(error)
   },
 )
