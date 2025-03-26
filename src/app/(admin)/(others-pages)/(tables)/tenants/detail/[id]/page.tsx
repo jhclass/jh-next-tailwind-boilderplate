@@ -15,6 +15,8 @@ import { TenantResponse, useTenantsStore } from '@/store/tenantsStore'
 import { useForm, Controller } from 'react-hook-form'
 import { getData } from '@/lib/api'
 import { useQuery } from '@tanstack/react-query'
+import { TenantIdAll } from '@/lib/validation/tenantIdData'
+import { logger } from '@/lib/logger'
 
 export default function TenantsDetail() {
   const params = useParams()
@@ -62,7 +64,16 @@ export default function TenantsDetail() {
   })
   useEffect(() => {
     if (data) {
-      setTenantsIdData(data)
+      const validation = TenantIdAll.safeParse(data)
+      console.log('validation', validation?.data)
+      if (!validation.success) {
+        logger.error(`데이터 검증 실패`, validation.error)
+      } else {
+        setTenantsIdData({
+          ...validation.data,
+          error: validation.data.error ?? null,
+        })
+      }
     }
   }, [data])
   console.log('Existing Data', data)

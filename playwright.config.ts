@@ -1,6 +1,6 @@
 // playwright.config.ts
 import { defineConfig, devices } from '@playwright/test'
-import { env } from '@/lib/env'
+import { env } from '@/lib/validation/env'
 export default defineConfig({
   testDir: './src/app/tests', // 테스트 폴더
   timeout: 30 * 1000,

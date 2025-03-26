@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { env } from '@/lib/env'
+import { env } from '@/lib/validation/env'
 import { useGlobalErrorStore } from '@/store/errorStore'
 import { logger } from '@/lib/logger'
 //axios instance 생성
@@ -30,7 +30,7 @@ api.interceptors.response.use(
   response => response,
   error => {
     //console.error(`API 요청 실패:`, error)
-    logger.warn(`API 요청 실패:`, error)
+    logger.error(`API 요청 실패:`, error)
     if (error.status === 404) {
       useGlobalErrorStore.getState().setGlobalError('404 Not Found')
     }
