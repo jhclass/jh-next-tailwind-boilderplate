@@ -3,11 +3,14 @@ import { Outfit } from 'next/font/google'
 import './globals.css'
 import { SidebarProvider } from '@/context/SidebarContext'
 import { ThemeProvider } from '@/context/ThemeContext'
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useGlobalErrorStore } from '@/store/errorStore'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-
+import StorageUtil from '@/lib/storage'
+interface Itoken {
+  token: string | null
+}
 const outfit = Outfit({
   variable: '--font-outfit-sans',
   subsets: ['latin'],
@@ -18,12 +21,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   const router = useRouter()
-  const [token, setToken] = useState<string | null>(null)
+  const [token, setToken] = useState<Itoken | null>(null)
   const [loading, setLoading] = useState(true)
   const { error, clearError } = useGlobalErrorStore()
   const queryClient = new QueryClient()
   useEffect(() => {
-    const storedToken = localStorage.getItem('token')
+    //const storedToken = localStorage.getItem('token') as string | null
+    const storedToken = StorageUtil.get<Itoken>('token')
     setToken(storedToken)
     if (token === null) {
       alert('Your token has expired.')
