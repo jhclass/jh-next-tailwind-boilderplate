@@ -634,6 +634,77 @@ useEffect(() => {
 
 ## **7) LocalStorage 관리 (storage.ts)**
 
+- LocalStorage 를 util 로 만들어야 하는 이유 (setItem/getItem)
+- 타입안정성 유지
+- JSON 파싱/문자열화가 귀찮음 (매번 해야하지)
+- 키관리가 안됨.
+- 이 모든게 개발 생산성과 연결이 된다!
+
+- 먼저 StorageUtil 을 만들자
+
+```ts
+export default class StorageUtil {
+  static get<T>(key: string): T | null {
+    if (typeof window === 'undefined') return null
+    const value = localStorage.getItem(key)
+    try {
+      return value ? (JSON.parse(value) as T) : null
+    } catch {
+      return null
+    }
+  }
+  static set<T>(key: string, value: T) {
+    localStorage.setItem(key, JSON.stringify(value))
+  }
+  static remove(key: string) {
+    localStorage.removeItem(key)
+  }
+  static clear() {
+    localStorage.clear()
+  }
+  static has(key: string): boolean {
+    return localStorage.getItem(key) !== null
+  }
+}
+```
+
+- 최상위 컴포넌트(Layout.tsx)에 적용
+- 기존코드
+
+```tsx
+// src/app/layout.tsx
+const [token, setToken] = useState<string | null>(null)
+useEffect(() => {
+  const storedToken = localStorage.getItem('token')
+  setToken(storedToken)
+  if (token === null) {
+    alert('Your token has expired.')
+    router.push('/signin')
+    setLoading(false)
+  }
+}, [token, router])
+```
+
+- 수정코드
+
+```tsx
+import StorageUtil from '@/lib/storage'
+interface Itoken {
+  token: string | null
+}
+useEffect(() => {
+  const storedToken = StorageUtil.get<Itoken>('token')
+  const [token, setToken] = useState<Itoken | null>(null)
+
+  setToken(storedToken)
+  if (token === null) {
+    alert('Your token has expired.')
+    router.push('/signin')
+    setLoading(false)
+  }
+}, [token, router])
+```
+
 ## **8) Debounce (debounce.ts)**
 
 ## **9) 날짜 포맷 변경 (date.ts)**
@@ -928,6 +999,50 @@ logger.error(`API 요청 실패:`, error)
 > next-intl
 
 - 번역 연동이 필요하다면? Crowdin (유료)
+- config.ts 수정
+
+```ts
+//next.config.ts
+import type { NextConfig } from 'next'
+import createNextIntlPlugin from 'next-intl/plugin'
+
+const nextConfig: NextConfig = {
+  /* config options here */
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    })
+    return config
+  },
+}
+const withNextIntl = createNextIntlPlugin()
+
+export default withNextIntl(nextConfig)
+```
+
+- request.ts 작성(경로주의의)
+
+```ts
+import { getRequestConfig } from 'next-intl/server'
+
+export default getRequestConfig(async () => {
+  // Provide a static locale, fetch a user setting,
+  // read from `cookies()`, `headers()`, etc.
+  const locale = 'en'
+
+  return {
+    locale,
+    messages: (await import(`/src/locale/${locale}.json`)).default,
+  }
+})
+```
+
+- 경로에 맞는 json 파일 생성 (request.ts 에 작성한 경로.)
+- 나머지는 공식문서를 따라 작성.
+  > [next-intl 공식문서](https://next-intl.dev/docs/getting-started/app-router/without-i18n-routing)
+- 주의 할 점 서버사이드에서 실행되지 않는 메서드가 있기 때문에 클라이언트 사이드에서 실행되는 메서드 또는 모듈이 있는 경우
+  컴포넌트화 해서 분리할 필요가 있다. 이 부분 유의할 것.
 
 ## **20) Authentication**
 
