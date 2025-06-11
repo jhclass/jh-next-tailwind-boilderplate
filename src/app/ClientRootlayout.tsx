@@ -40,6 +40,7 @@ export default function ClientRootLayout({
 
   useEffect(() => {
     const storedToken = StorageUtil.get<Itoken>('token')
+    console.log(storedToken)
     setToken(storedToken)
 
     if (!storedToken) {

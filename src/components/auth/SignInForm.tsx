@@ -47,8 +47,8 @@ export default function SignInForm() {
       return
     }
     const token = comparedPassword[0].token
-
-    localStorage.setItem('token', token)
+    console.log(typeof token, 'token')
+    localStorage.setItem('token', JSON.stringify(token))
     router.push('/')
   }
   return (
